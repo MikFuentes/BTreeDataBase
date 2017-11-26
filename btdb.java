@@ -13,16 +13,21 @@ public class btdb{
 			solve(valueFile);
 		}
 	}
-	public static void solve(Values valueFile) throws IOException{
+	public static void solve(Values valueFile){
 		Scanner in = new Scanner(System.in);
 		String input = in.next();
-		while(!input.equals("exit")){
-			if(input.equals("insert")){
-				int key = in.nextInt();
-				String toStore = in.next();
-				valueFile.writeToFile(toStore.getBytes());
+		try{
+			while(!input.equals("exit")){
+				if(input.equals("insert")){
+					int key = in.nextInt();
+					String toStore = in.next();
+					valueFile.writeToFile(toStore.getBytes("UTF8"));
+				}
+				input = in.next();
 			}
-			input = in.next();
+		}
+		catch(IOException ie){
+			ie.printStackTrace(System.out);
 		}
 	}
 }
