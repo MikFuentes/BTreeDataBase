@@ -19,15 +19,15 @@ public class btdb{
 		try{
 			while(!input.equals("exit")){
 				if(input.equals("insert")){
-					int key = in.nextInt();
-					String toStore = in.next();
-					valueFile.writeToFile(toStore.getBytes("UTF8"));
+					long key = in.nextLong();
+					String toStore = in.nextLine();
+					valueFile.writeToFile(toStore.trim().getBytes("UTF8"));
 				}
 				input = in.next();
 			}
 		}
-		catch(IOException ie){
-			ie.printStackTrace(System.out);
+		catch(IOException ex){
+			ex.printStackTrace(System.out);
 		}
 	}
 }
