@@ -35,6 +35,18 @@ public class Values{
 		recordCount++;
 	}
 
+	public String readValues(long record)throws IOException{
+		valuesFile.seek(INITIAL_OFFSET+record*BYTE_LENGTH+8);
+		short stringLength = valuesFile.readShort();
+		byte[] byteArray = new byte[stringLength];
+		for(int i = 0; i<stringLength; i++){
+			byteArray[i] = valuesFile.readByte();
+		}
+		String toReturn = new String(byteArray,"UTF8");
+		return toReturn;
+
+	}
+
 	public void updateFile(byte[] b, long l) throws IOException{
 		valuesFile.seek(INITIAL_OFFSET+l*BYTE_LENGTH);
 		register(b, l);
