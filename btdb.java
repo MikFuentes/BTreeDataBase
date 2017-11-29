@@ -23,6 +23,16 @@ public class btdb{
 					String toStore = in.nextLine();
 					valueFile.writeToFile(toStore.trim().getBytes("UTF8"));
 				}
+				else if(input.equals("select")){
+					long key = in.nextLong();
+					System.out.println(valueFile.readValues(key));
+				}
+				else if(input.equals("update")){
+					long key = in.nextLong();
+					String toStore = in.nextLine();
+					valueFile.updateFile(toStore.trim().getBytes("UTF8"), key);
+				}
+
 				input = in.next();
 			}
 		}
