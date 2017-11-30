@@ -13,7 +13,7 @@ public class Values{
 			if(file.exists()){
 				valuesFile = new RandomAccessFile(name, "rwd");
 				valuesFile.seek(RECORD_COUNT_OFFSET);
-				recordCount = valuesFile.readLong() + 1;
+				recordCount = valuesFile.readLong();
 			}
 			else{
 				valuesFile = new RandomAccessFile(name, "rwd");
@@ -28,11 +28,11 @@ public class Values{
 	}
 	
 	public void writeToFile(byte[] b) throws IOException{
-		valuesFile.seek(0);
-		valuesFile.writeLong(recordCount);
 		valuesFile.seek(INITIAL_OFFSET+recordCount*BYTE_LENGTH);
 		register(b, recordCount);
 		recordCount++;
+		valuesFile.seek(0);
+		valuesFile.writeLong(recordCount);
 	}
 
 	public String readValues(long record)throws IOException{
@@ -45,6 +45,9 @@ public class Values{
 		String toReturn = new String(byteArray,"UTF8");
 		return toReturn;
 
+	}
+	public long getRecord(){
+		return recordCount;
 	}
 
 	public void updateFile(byte[] b, long l) throws IOException{
