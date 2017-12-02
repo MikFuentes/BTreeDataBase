@@ -74,6 +74,19 @@ public class BTree{
 		}
 		return toReturn;
 	}
+	
+	/**
+	*Class Node is a constructor for the nodes that will placed into the B-tree
+	*Note that unlike BST nodes, B-tree nodes have multiple branches 
+	*This means that a set or array of children must be specified, instead of just a right and left child
+	*B-tree nodes also store multiple key values, instead of a single value
+	*To store keys, a set or array can be used
+	*
+	*@param keys		array of (primitive data type) longs that refer to key values of a node
+	*@param childID		array of (primitive data type) longs that refer to the children/branches of a node
+	*@param recordOffset
+	*@param parentPointer	long that points to the parent node of a node 
+	*/
 
 	class Node{ //node class
 		private long[] keys, childID, recordsOffset;
