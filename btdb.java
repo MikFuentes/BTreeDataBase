@@ -10,18 +10,24 @@ public class btdb{
 			String btData = args[0];
 			String valuesData = args[1];
 			Values valueFile = new Values(valuesData);
-			solve(valueFile);
+			BTree bTreeFile = new BTree(btData);
+			solve(valueFile,bTreeFile);
 		}
 	}
-	public static void solve(Values valueFile){
+	public static void solve(Values valueFile, BTree bTreeFile){
 		Scanner in = new Scanner(System.in);
 		String input = in.next();
 		try{
 			while(!input.equals("exit")){
 				if(input.equals("insert")){
+					
 					long key = in.nextLong();
 					String toStore = in.nextLine();
+
+					long recordNum = valueFile.getRecord();
 					valueFile.writeToFile(toStore.trim().getBytes("UTF8"));
+					bTreeFile.insert(key,0,recordNum);
+
 				}
 				else if(input.equals("select")){
 					long key = in.nextLong();
@@ -31,6 +37,9 @@ public class btdb{
 					long key = in.nextLong();
 					String toStore = in.nextLine();
 					valueFile.updateFile(toStore.trim().getBytes("UTF8"), key);
+				}
+				else{
+					System.out.println("ERROR: invalid command");
 				}
 
 				input = in.next();
