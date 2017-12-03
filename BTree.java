@@ -70,9 +70,21 @@ public class BTree{
 		writeNode(checker, nodeLocation);
 	}
 	public void split(){ //method for spliiting B-Tree **to be continued
-
+	
+		
 	}
-
+	/**
+	*Method writeNode outputs a node's values to a file
+	*a specified node is searched for in the B-tree, then its values are read and outputted
+	*values include:
+	*	1.the parent of the node (the node lies in the parent's children array)
+	*	2.the IDs of the node's children
+	*	3.the node's keys
+	*	4.the node's position in the values file (offset)
+	*	
+	*@param node		specified node to output values from
+	*@param location	long that indicates the node's location in the B-Tree
+	*/
 	public void writeNode(Node node, long location) throws IOException{// used when writing to file
 		bTreeFile.seek(INITIAL_OFFSET+location*NODE_LENGTH);
 		bTreeFile.writeLong(node.parentPointer);
@@ -84,7 +96,20 @@ public class BTree{
 			}
 		}
 	}
-
+	/**
+	*Method readNode returns values stored in a file and writes them to a new node
+	*the new node is placed in a specified location in the B-tree 
+	*values returned include: 
+	*	1.a new node
+	*	2.the parent of the node (the node lies in the parent's children array)
+	*	3.the IDs of the node's children
+	*	4.the node's keys
+	*	5.the node's position in the values file (offset)
+	*
+	*	
+	*@param location	long that indicates the node's location in the B-Tree
+	*@return toReturn 	returns node's values read from file
+	*/
 	public Node readNode(long location) throws IOException{//used when inserting to nodes
 		bTreeFile.seek(INITIAL_OFFSET+location*NODE_LENGTH);
 		Node toReturn = new Node();
