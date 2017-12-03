@@ -81,9 +81,10 @@ public class BTree{
 	*	3.the IDs of the node's children
 	*	4.the node's keys
 	*	5.offset to indicate distance from beginning of the array to outputted keys and children
-	*note: #1 is not read from the file, while #s 2-5 are returned from the read file
+	*
 	*	
 	*@param location	long that indicates the node's location in the B-Tree
+	*@return toReturn 	returns node's values read from file
 	*/
 	public Node readNode(long location) throws IOException{//used when inserting to nodes
 		bTreeFile.seek(INITIAL_OFFSET+location*NODE_LENGTH);
