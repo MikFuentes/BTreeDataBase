@@ -56,7 +56,7 @@ public class BTree{
 	*	1.the parent of the node (the node lies in the parent's children array)
 	*	2.the IDs of the node's children
 	*	3.the node's keys
-	*	4.offset to indicate distance from beginning of the array to outputted keys and children
+	*	4.the node's position in the values file (offset)
 	*	
 	*@param node		specified node to output values from
 	*@param location	long that indicates the node's location in the B-Tree
@@ -80,7 +80,7 @@ public class BTree{
 	*	2.the parent of the node (the node lies in the parent's children array)
 	*	3.the IDs of the node's children
 	*	4.the node's keys
-	*	5.offset to indicate distance from beginning of the array to outputted keys and children
+	*	5.the node's position in the values file (offset)
 	*
 	*	
 	*@param location	long that indicates the node's location in the B-Tree
