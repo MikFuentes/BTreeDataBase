@@ -30,6 +30,7 @@ public class BTree{
 				bTreeFile.writeLong(rootFinder);
 				Node initial = new Node();
 				writeNode(initial, 0);
+				initial = null;
 			}
 		}
 		catch(IOException ex){
@@ -38,12 +39,35 @@ public class BTree{
 	}
 	public void insert(long key, long nodeLocation, long offset) throws IOException{// method for inserting keys and their respective offset **not complete
 		Node checker = new Node();
-		checker = readNode(nodeLocation);	
-		for(int i = ORDER-1; i>=0; i++){
-			if(key<checker.keys[i]){
-				checker.keys[i+1]=checker.keys[i];
+		checker = readNode(nodeLocation);
+		if(!checker.hasChild()){
+			for(int i = ORDER-2; i>=0; i--){
+				//System.out.println("Now at index "+ i);
+				if(checker.keys[i] == -1){
+					if(i==0){
+						checker.keys[i]=key;
+						checker.recordsOffset[i] = offset;
+					}
+					continue;
+				}
+				if(key<checker.keys[i]){
+					checker.keys[i+1]=checker.keys[i];
+					checker.recordsOffset[i+1] = checker.recordsOffset[i];
+					if(i==0){
+						checker.keys[i] = key;
+						checker.recordsOffset[i] = offset;
+					}
+				}
+				else{
+					checker.keys[i+1] = key;
+					checker.recordsOffset[i+1] = offset;
+					break;
+				}
 			}
 		}
+		
+
+		writeNode(checker, nodeLocation);
 	}
 	public void split(){ //method for spliiting B-Tree **to be continued
 
@@ -74,25 +98,11 @@ public class BTree{
 		}
 		return toReturn;
 	}
-	
-	/**
-	*Class Node is a constructor for the nodes that will placed into the B-tree
-	*Note that unlike BST nodes, B-tree nodes have multiple branches 
-	*This means that a set or array of children must be specified, instead of just a right and left child
-	*B-tree nodes also store multiple key values, instead of a single value
-	*To store keys, a set or array can be used
-	*
-	*@field keys		array of (primitive data type) longs that refer to key values of a node
-	*@field childID		array of (primitive data type) longs that refer to the children/branches of a node
-	*@field recordOffset
-	*@field parentPointer	long that points to the parent node of a node 
-	*/
 
 	class Node{ //node class
 		private long[] keys, childID, recordsOffset;
 		private long parentPointer;
 		public Node(){ //each node has a long[]
-			//pointer = new long[3*ORDER+1]; //handles overflow
 			keys = new long[ORDER];
 			childID = new long[ORDER];
 			recordsOffset = new long[ORDER];
@@ -103,6 +113,11 @@ public class BTree{
 				childID[i] = -1;
 				recordsOffset[i] = -1;
 			}
+		}
+		public boolean hasChild(){
+			if(childID[0]!=-1)
+				return true;
+			return false;
 		}
 	}
 }
