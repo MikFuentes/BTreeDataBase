@@ -41,6 +41,17 @@ public class BTree{
 			ex.printStackTrace(System.out);
 		}
 	}
+	/**
+	*Method insert adds key values and the offset value of a node to the node's values
+	*calls multiple other methods, as well as recursively calling itself
+	*uses other methods to check for existing keys and write to files
+	*if a key value already in the node is inserted, prints output indicating that the key value already exists
+	*
+	*@param key		long indicating a key value of a node
+	*@param nodeLocation	long value indicating a node's location in the B-tree		
+	*@param offset		long value indicating a node's location in the values file
+	*@throws IOException
+	*/
 	public void insert(long key, long nodeLocation, long offset) throws IOException{// method for inserting keys and their respective offset **not complete
 		
 		Node checker = readNode(nodeLocation);
