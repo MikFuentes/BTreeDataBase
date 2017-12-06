@@ -1,6 +1,10 @@
 import java.io.*;
 import java.util.*;
-
+/**
+*class BTree handles node creation, BTree creation, reading and writing to the Btree file
+*performs multiple functions to the Btree, including inserting, removing, and searching for nodes and keys
+*The Btree is autobalancing {@see method split} and manages links between parents, children, and siblings
+*/
 public class BTree{
 	private final int ORDER = 3;
 	private final int CENTER = (ORDER-1)/2;
@@ -273,13 +277,23 @@ public class BTree{
 				}
 			}
 		}
-
+		/**
+		*method hasChild checks if the node has children
+		*if the first element of childID array returns -1, that denotes that there are no children
+		*
+		*@return boolean	returns a true or false statement depending on if there is a child attached to the node
+		*/
 		private boolean hasChild(){
 			if(childID[0]!=-1)
 				return true;
 			return false;
 		}
-
+		/**
+		*method findChild looks for a node in a children array given a key value
+		*
+		*@param key	long value indicating a value to search with
+		*@return id	returns the child's ID#
+		*/
 		private long findChild(long key){
 			long id = -1;
 			for(int i = 0; i<ORDER-1; i++){
@@ -290,7 +304,11 @@ public class BTree{
 			}
 			return id;
 		}
-
+		/**
+		*Method addChild adds a node to a parent node's array from a given location in the BTree file
+		*
+		*@param nodeLocation	location of a value in the Btree file
+		*/
 		private void addChild(long nodeLocation){
 			for(int i = 0; i<=ORDER; i++){
 				if(childID[i]==-1){
@@ -299,6 +317,12 @@ public class BTree{
 				}
 			}
 		}
+		/**
+		*method insertKey adds a keyto a node's values given a key value and a node's location in the values file
+		*
+		*@param key		long value indicating the value of the key to be inserted
+		*@param offset		long value indicating a node's location in the values file
+		*/
 
 		private void insertKey(long key, long offset){
 			for(int i = ORDER-2; i>=0; i--){
@@ -327,6 +351,13 @@ public class BTree{
 				}
 			}
 		}
+		/**
+		*method transferInformation communicates information from a node to its parent and sibling
+		*for use in split and relinkCP
+		*
+		*@param parent		the parent of the node
+		*@param sibling		other nodes in the children array of the node's parent
+		*/
 		private void transferInformation(Node parent, Node sibling){
 			parent.insertKey(keys[CENTER],recordsOffset[CENTER]);
 			keys[CENTER] = -1;
