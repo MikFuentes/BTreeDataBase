@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class BTree{
-	private final int ORDER = 7;
+	private final int ORDER = 3;
 	private final int CENTER = (ORDER-1)/2;
 	private final long RECORD_COUNT_OFFSET = 0;
 	private final long INITIAL_OFFSET = 16;
@@ -117,7 +117,7 @@ public class BTree{
 		for(int i = 0; i<CENTER; i++){
 			if(parent.childID[i] == -1)
 				break;
-			bTreeFile.seek(parent.childID[i]);
+			bTreeFile.seek(INITIAL_OFFSET+parent.childID[i]*NODE_LENGTH);
 			bTreeFile.writeLong(parent.nodeID);
 		}
 	}
