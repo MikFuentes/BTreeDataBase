@@ -11,10 +11,10 @@ public class btdb{
 			String valuesData = args[1];
 			Values valueFile = new Values(valuesData);
 			BTree bTreeFile = new BTree(btData);
-			solve(valueFile,bTreeFile);
+			driver(valueFile,bTreeFile);
 		}
 	}
-	public static void solve(Values valueFile, BTree bTreeFile){
+	public static void driver(Values valueFile, BTree bTreeFile){
 		Scanner in = new Scanner(System.in);
 		String input = in.next();
 		try{
@@ -23,9 +23,10 @@ public class btdb{
 					
 					long key = in.nextLong();
 					String toStore = in.nextLine();
-					if(bTreeFile.findKey(key,0)==-1){
+					if(bTreeFile.findKey(key,bTreeFile.findRoot())==-1){
 						long recordNum = valueFile.getRecord();
-						bTreeFile.insert(key,0,recordNum);
+						//System.out.printf("Root is at %d",bTreeFile.findRoot());
+						bTreeFile.insert(key,bTreeFile.findRoot(),recordNum);
 						valueFile.writeToFile(toStore.trim().getBytes("UTF8"));
 						System.out.printf("%d inserted.\n",key);
 					}
@@ -35,7 +36,7 @@ public class btdb{
 				}
 				else if(input.equals("select")){
 					long key = in.nextLong();
-					long location = bTreeFile.findKey(key,0);
+					long location = bTreeFile.findKey(key,bTreeFile.findRoot());
 					if(location!=-1){
 						System.out.printf("%d %s\n",key,valueFile.readValues(location));
 					}
@@ -45,7 +46,7 @@ public class btdb{
 				else if(input.equals("update")){
 					long key = in.nextLong();
 					String toStore = in.nextLine();
-					long location = bTreeFile.findKey(key,0);
+					long location = bTreeFile.findKey(key,bTreeFile.findRoot());
 					if(location!=-1){
 						valueFile.updateFile(toStore.trim().getBytes("UTF8"), location);
 						System.out.printf("%d updated.\n", key);
@@ -54,7 +55,7 @@ public class btdb{
 						System.out.println("ERROR: key does not exist.");
 				}
 				else{
-					System.out.println("ERROR: invalid command");
+					System.out.println("ERROR: invalid command.");
 				}
 
 				input = in.next();
