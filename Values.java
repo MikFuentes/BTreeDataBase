@@ -4,7 +4,7 @@ import java.io.*;
  * <h1>Values!</h1>
  * This Value class contains all the value strings of the database.
  *
- * @author Mikael Fuentes, Magnus Untal, & Nigel Yu 
+ * @author Mikael Fuentes, Magnus Untal, and Nigel Yu 
  * @1.0
  * @since 2017-12-06
  */
@@ -47,7 +47,7 @@ public class Values{
      */
 	public void writeToFile(byte[] b) throws IOException{
 		valuesFile.seek(INITIAL_OFFSET+recordCount*BYTE_LENGTH);
-		register(b, recordCount);
+		register(b);
 		recordCount++;
 		valuesFile.seek(0);
 		valuesFile.writeLong(recordCount);
@@ -60,7 +60,7 @@ public class Values{
      * @return toReturn the string stored in the values file at the record number
      */
 	public String readValues(long record)throws IOException{
-		valuesFile.seek(INITIAL_OFFSET+record*BYTE_LENGTH+8);
+		valuesFile.seek(INITIAL_OFFSET+record*BYTE_LENGTH);
 		short stringLength = valuesFile.readShort();
 		byte[] byteArray = new byte[stringLength];
 		for(int i = 0; i<stringLength; i++){
@@ -87,17 +87,15 @@ public class Values{
      */
 	public void updateFile(byte[] b, long l) throws IOException{
 		valuesFile.seek(INITIAL_OFFSET+l*BYTE_LENGTH);
-		register(b, l);
+		register(b);
 	}
 
 	/**
-     * This method is used to register a string at a certain record.
+     * This method is used to register the string
      *
      * @param b the bytes to be written 
-     * @param l the record number
      */
-	private void register(byte[] b, long l) throws IOException{
-		valuesFile.writeLong(l);
+	private void register(byte[] b) throws IOException{
 		valuesFile.writeShort(b.length);
 		valuesFile.write(b);
 	}
