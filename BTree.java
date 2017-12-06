@@ -8,10 +8,8 @@ public class BTree{
 	private final long INITIAL_OFFSET = 16;
 	private final long NODE_LENGTH = (3*ORDER-1)*8;	
 
-	private long nodeCount, rootFinder;
+	private long nodeCount;
 	private RandomAccessFile bTreeFile;
-	private ArrayList<Node> nodeList;
-	private ArrayList<Long> childInformation;
 
 	public BTree(String name){
 
@@ -21,15 +19,13 @@ public class BTree{
 				bTreeFile = new RandomAccessFile(name,"rwd");
 				bTreeFile.seek(RECORD_COUNT_OFFSET);
 				nodeCount = bTreeFile.readLong();
-				rootFinder = bTreeFile.readLong();
 			}
 			else{
 				bTreeFile = new RandomAccessFile(name,"rwd");
 				bTreeFile.seek(RECORD_COUNT_OFFSET);
 				nodeCount = 1;
-				rootFinder = 0;
 				bTreeFile.writeLong(nodeCount);
-				bTreeFile.writeLong(rootFinder);
+				bTreeFile.writeLong(0);
 				Node initial = new Node(0);
 				writeNode(initial);
 				initial = null;
@@ -61,7 +57,7 @@ public class BTree{
 
 		else{
 			long newLocation = checker.findChild(key);
-			System.out.printf("Going to node %d\n", newLocation);
+			//System.out.printf("Going to node %d\n", newLocation);
 			checker = null;
 			insert(key,newLocation,offset);
 		}
@@ -139,19 +135,19 @@ public class BTree{
 				&&checker.childID[i+1]!=-1){
 				long newLocation = checker.childID[i+1];
 				checker = null;
-				System.out.printf("Entering node %d\n", newLocation);
+				//System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key, newLocation);
 			}
 			else if(checker.keys[i]>key&&checker.childID[i]!=-1){
 				long newLocation = checker.childID[i];
 				checker = null;
-				System.out.printf("Entering node %d\n", newLocation);
+				//System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key,newLocation);
 			}
 			else if(i==ORDER-2&&checker.childID[i+1]!=-1){
 				long newLocation = checker.childID[i+1];
 				checker = null;
-				System.out.printf("Entering node %d\n", newLocation);
+				//System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key,newLocation);
 			}
 		}
