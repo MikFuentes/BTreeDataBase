@@ -14,7 +14,7 @@ public class btdb{
 	/**
 	* Main method for btdb class
 	* Passes the required files to the driver method.
-	* @param args 	unused
+	* @param args 	accepts BTree and Values files
 	*/
 	public static void main(String[] args) throws IOException{
 		if(args.length!=2){
