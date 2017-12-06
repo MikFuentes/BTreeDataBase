@@ -44,8 +44,8 @@ public class Values{
 		}
 		String toReturn = new String(byteArray,"UTF8");
 		return toReturn;
-
 	}
+	
 	public long getRecord(){
 		return recordCount;
 	}
