@@ -13,8 +13,8 @@ import java.io.*;
 public class btdb{
 	/**
 	* Main method for btdb class
-	* Passes the required files to the driver method
-	*
+	* Passes the required files to the driver method.
+	* @param args 	accepts BTree and Values files
 	*/
 	public static void main(String[] args) throws IOException{
 		if(args.length!=2){
@@ -29,8 +29,8 @@ public class btdb{
 		}
 	}
 	/**
-	* Driver handles input and output printing
-	* Serves as the bridge between the files and user input
+	* Method driver handles input and output printing
+	* Serves as the bridge between the files and user input.
 	*
 	* @param valueFile	the values file, where node values are stored
 	* @param bTreeFile	the btree file containing the btree and nodes
