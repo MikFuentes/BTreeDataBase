@@ -10,7 +10,14 @@ public class BTree{
 
 	private long nodeCount;
 	private RandomAccessFile bTreeFile;
-
+	
+	/**
+	*Constructor Btree initializes the BTree file
+	*different branches are performed depending on if the BTree file has already been created
+	*Also initialized are multiple arrays for storing nodes
+	*
+	*@param name		string name of the file to be accessed/created
+	*/
 	public BTree(String name){
 
 		try{
@@ -75,6 +82,17 @@ public class BTree{
 		}
 		
 	}
+	
+	/**
+	*Method split auto-balances the Btree
+	*ensures that search and insert methods are always performed at (nlogn) time
+	*saves memory to avoid exceeding memory limit
+	*two branches determined by if a node has a parent (-1 denotes no parent)
+	*
+	*@param node		node to be manipulated for split
+	*@throws IOException
+	*@see IOException
+	*/
 
 	private void split(Node node) throws IOException{ //method for spliiting B-Tree **to be continued
 		if(node.parentPointer == -1){
@@ -112,7 +130,13 @@ public class BTree{
 			writeNode(parent);
 		}
 	}
-
+	/**
+	*Method relinkCP re-pairs a node with its parent after the split method
+	*
+	*@param parent		parent of a node to be relinked
+	*@throws IOException
+	*@see IOException
+	*/
 	private void relinkCP(Node parent) throws IOException{
 		for(int i = 0; i<CENTER; i++){
 			if(parent.childID[i] == -1)
@@ -121,11 +145,26 @@ public class BTree{
 			bTreeFile.writeLong(parent.nodeID);
 		}
 	}
+	/**
+	*Method findRoot searches the BTree file for the node with no parent (the root)
+	*
+	*@return bTreeFile.readLong() 		returns the root's index as a long integer
+	*@throws IOException
+	*@see IOException
+	*/
 	public long findRoot()throws IOException{
 		bTreeFile.seek(8);
 		return bTreeFile.readLong();
 	}
-	
+	/**
+	*Method findKey recursively searches for a key in a node's values
+	*values are stored in a location in the BTree file
+	*checks if the key value exists somewhere in the Btree
+	*
+	*@param key		long value indicating a key's value to be searched for
+	*@param location	long value indicating a location in the Btree file
+	*@return findKey	recursively recalls the method with a new location to search in the Btree file
+	*/
 	public long findKey(long key, long location) throws IOException{
 		Node checker = readNode(location);
 		for(int i = 0; i<ORDER-1; i++){
