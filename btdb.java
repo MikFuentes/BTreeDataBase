@@ -2,12 +2,20 @@ import java.util.*;
 import java.io.*;
 
 /**
-*Class btdb is the main class for this project
-*only works with 2 files (value and btdb), otherwise prints out an error
-*handles other errors and input commands 
-*
+* <h1>btdb!</h1>
+* Main class for the project
+* Handles inputs, and errors for the BTree and the Value files
+* 
+* @author Mikael Fuentes, Magnus Untal, and Nigel Yu 
+* @1.0
+* @since 2017-12-06
 */
 public class btdb{
+	/**
+	* Main method for btdb class
+	* Passes the required files to the driver method
+	*
+	*/
 	public static void main(String[] args) throws IOException{
 		if(args.length!=2){
 			System.out.println("ERROR: Invalid Argument\nRequires Two File Arguments");
@@ -21,11 +29,11 @@ public class btdb{
 		}
 	}
 	/**
-	*method driver handles input and output printing
-	*serves as the bridge between the files and user input
+	* Driver handles input and output printing
+	* Serves as the bridge between the files and user input
 	*
-	*@param valueFile	the values file, where node values are stored
-	*@param bTreeFile	the btree file containing the btree and nodes
+	* @param valueFile	the values file, where node values are stored
+	* @param bTreeFile	the btree file containing the btree and nodes
 	*/
 	public static void driver(Values valueFile, BTree bTreeFile){
 		Scanner in = new Scanner(System.in);
