@@ -16,10 +16,10 @@ public class Values{
 	private RandomAccessFile valuesFile;
 	
 	/**
-     * This is the constructor for the values
-     *
-     * @param name the name of the file
-     */
+    * Constructor Values initializes the file to be used for the Values file
+    *
+    * @param name 	the name of the file
+    */
 	public Values(String name){
 		try{
 			File file = new File(name);
@@ -41,9 +41,9 @@ public class Values{
 	}
 
 	/**
-     * This method is used to write to the file.
+     * Method writeToFile is used to write to the file.
      *
-     * @param b the bytes to be written 
+     * @param b 	byte[] where the bytes are written 
      */
 	public void writeToFile(byte[] b) throws IOException{
 		valuesFile.seek(INITIAL_OFFSET+recordCount*BYTE_LENGTH);
@@ -54,10 +54,10 @@ public class Values{
 	}
 
 	/**
-     * This method is used to read the file. 
+     * Method readValues is used to read the file.
      *
-     * @param record the record number to be
-     * @return toReturn the string stored in the values file at the record number
+     * @param record 		long value indicating the record number to be
+     * @return toReturn 	the string stored in the values file at the record number
      */
 	public String readValues(long record)throws IOException{
 		valuesFile.seek(INITIAL_OFFSET+record*BYTE_LENGTH);
@@ -71,30 +71,30 @@ public class Values{
 	}
 	
 	/**
-     * This method is used to count the number of records.
-     *
-     * @return recordCount the number of records as a long
-     */
+    * Method getRecord is used to count the number of records.
+    *
+    * @return recordCount 	long value indicating the the number of records
+    */
 	public long getRecord(){
 		return recordCount;
 	}
 
 	/**
-     * This method is used to update the file.
-     *
-     * @param b the bytes to be written 
-     * @param l the record number
-     */
+    * Method updateFile is used to update the file.
+    *
+    * @param b 		byte[] where the bytes are written 
+    * @param l 		long value indicating the record number
+    */
 	public void updateFile(byte[] b, long l) throws IOException{
 		valuesFile.seek(INITIAL_OFFSET+l*BYTE_LENGTH);
 		register(b);
 	}
 
 	/**
-     * This method is used to register the string
-     *
-     * @param b the bytes to be written 
-     */
+    * Method register is used to register the string.
+    *
+    * @param b 		byte[] where the bytes are written 
+    */
 	private void register(byte[] b) throws IOException{
 		valuesFile.writeShort(b.length);
 		valuesFile.write(b);
