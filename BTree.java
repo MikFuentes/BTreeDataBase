@@ -22,8 +22,6 @@ public class BTree{
 				bTreeFile.seek(RECORD_COUNT_OFFSET);
 				nodeCount = bTreeFile.readLong();
 				rootFinder = bTreeFile.readLong();
-				nodeList = new ArrayList<>();
-				childInformation = new ArrayList<>();
 			}
 			else{
 				bTreeFile = new RandomAccessFile(name,"rwd");
@@ -35,8 +33,6 @@ public class BTree{
 				Node initial = new Node(0);
 				writeNode(initial);
 				initial = null;
-				nodeList = new ArrayList<>();
-				childInformation = new ArrayList<>();
 			}
 		}
 		catch(IOException ex){
@@ -65,13 +61,17 @@ public class BTree{
 
 		else{
 			long newLocation = checker.findChild(key);
+			System.out.printf("Going to node %d\n", newLocation);
 			checker = null;
 			insert(key,newLocation,offset);
 		}
 
 		if(checker!=null){
-			if(checker.keys[ORDER-1]!=-1)
+			if(checker.keys[ORDER-1]!=-1){
 				split(checker);
+				bTreeFile.seek(0);
+				bTreeFile.writeLong(nodeCount);
+			}
 			else{
 				writeNode(checker);
 			}
@@ -94,7 +94,8 @@ public class BTree{
 			writeNode(node);
 			writeNode(rightChild);
 			writeNode(root);
-			writeHeader(root);
+			bTreeFile.seek(8);
+			bTreeFile.writeLong(root.nodeID);
 			node = null;
 			rightChild = null;
 			root = null;
@@ -104,16 +105,25 @@ public class BTree{
 			Node rightChild = new Node(nodeCount);
 			nodeCount++;
 			node.transferInformation(parent,rightChild);
+			parent.addChild(rightChild.nodeID);
+			rightChild.parentPointer = parent.nodeID;
+			relinkCP(rightChild);
+			writeNode(rightChild);
+			writeNode(node);
 			if(parent.keys[ORDER-1]!=-1){
 				split(parent);
 			}
+			writeNode(parent);
 		}
 	}
 
-	private void writeHeader(Node root) throws IOException{
-		bTreeFile.seek(0);
-		bTreeFile.writeLong(nodeCount);
-		bTreeFile.writeLong(root.nodeID);
+	private void relinkCP(Node parent) throws IOException{
+		for(int i = 0; i<CENTER; i++){
+			if(parent.childID[i] == -1)
+				break;
+			bTreeFile.seek(parent.childID[i]);
+			bTreeFile.writeLong(parent.nodeID);
+		}
 	}
 	public long findRoot()throws IOException{
 		bTreeFile.seek(8);
@@ -129,16 +139,19 @@ public class BTree{
 				&&checker.childID[i+1]!=-1){
 				long newLocation = checker.childID[i+1];
 				checker = null;
+				System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key, newLocation);
 			}
 			else if(checker.keys[i]>key&&checker.childID[i]!=-1){
 				long newLocation = checker.childID[i];
 				checker = null;
+				System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key,newLocation);
 			}
 			else if(i==ORDER-2&&checker.childID[i+1]!=-1){
 				long newLocation = checker.childID[i+1];
 				checker = null;
+				System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key,newLocation);
 			}
 		}
@@ -213,14 +226,16 @@ public class BTree{
 		private long parentPointer, nodeID;
 		private Node(long nodeLocation){ //each node has 3 long[]
 			keys = new long[ORDER];
-			childID = new long[ORDER];
+			childID = new long[ORDER+1];
 			recordsOffset = new long[ORDER];
 			parentPointer = -1;
 			nodeID = nodeLocation;
-			for(int i = 0; i<ORDER; i++){
-				keys[i] = -1;
+			for(int i = 0; i<=ORDER; i++){
 				childID[i] = -1;
-				recordsOffset[i] = -1;
+				if(i<ORDER){
+					keys[i] = -1;
+					recordsOffset[i] = -1;
+				}
 			}
 		}
 
@@ -233,14 +248,16 @@ public class BTree{
 		private long findChild(long key){
 			long id = -1;
 			for(int i = 0; i<ORDER-1; i++){
-				if(key>keys[i]&&key<keys[i+1])
+				if(key>keys[i]&&(key<keys[i+1]||keys[i+1]==-1))
+					return childID[i+1];
+				else if(key<keys[i])
 					return childID[i];
 			}
 			return id;
 		}
 
 		private void addChild(long nodeLocation){
-			for(int i = 0; i<ORDER; i++){
+			for(int i = 0; i<=ORDER; i++){
 				if(childID[i]==-1){
 					childID[i] = nodeLocation;
 					break;
@@ -254,35 +271,39 @@ public class BTree{
 					if(i==0){
 						keys[i] = key;
 						recordsOffset[i] = offset;
-						
 					}
 					continue;
 				}
 				if(key<keys[i]){
 					keys[i+1] = keys[i];
 					recordsOffset[i+1] = recordsOffset[i];
+					childID[i+2] = childID[i+1];
 					if(i==0){
 						keys[i] = key;
 						recordsOffset[i] = offset;
+						childID[i+1] = -1;
 					}
 				}
 				else{
 					keys[i+1] = key;
 					recordsOffset[i+1] = offset;
+					childID[i+2] = -1;
 					break;
 				}
 			}
 		}
-		private void transferInformation(Node root, Node sibling){
-			root.insertKey(keys[CENTER],recordsOffset[CENTER]);
+		private void transferInformation(Node parent, Node sibling){
+			parent.insertKey(keys[CENTER],recordsOffset[CENTER]);
 			keys[CENTER] = -1;
 			recordsOffset[CENTER] = -1;
-			for(int i = CENTER+1; i<ORDER; i++){
-				sibling.insertKey(keys[i],recordsOffset[i]);
+			for(int i = CENTER+1; i<=ORDER; i++){
 				sibling.addChild(childID[i]);
-				keys[i] = -1;
-				recordsOffset[i] = -1;
 				childID[i] = -1;
+				if(i<ORDER){
+					sibling.insertKey(keys[i],recordsOffset[i]);
+					keys[i] = -1;
+					recordsOffset[i] = -1;
+				}
 			}
 		}
 	}
