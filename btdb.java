@@ -1,6 +1,12 @@
 import java.util.*;
 import java.io.*;
 
+/**
+*Class btdb is the main class for this project
+*only works with 2 files (value and btdb), otherwise prints out an error
+*handles other errors and input commands 
+*
+*/
 public class btdb{
 	public static void main(String[] args) throws IOException{
 		if(args.length!=2){
@@ -14,6 +20,13 @@ public class btdb{
 			driver(valueFile,bTreeFile);
 		}
 	}
+	/**
+	*method driver handles input and output printing
+	*serves as the bridge between the files and user input
+	*
+	*@param valueFile	the values file, where node values are stored
+	*@param bTreeFile	the btree file containing the btree and nodes
+	*/
 	public static void driver(Values valueFile, BTree bTreeFile){
 		Scanner in = new Scanner(System.in);
 		String input = in.next();
