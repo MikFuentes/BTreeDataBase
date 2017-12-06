@@ -21,10 +21,10 @@ public class BTree{
 
 	/**
 	* Constructor Btree initializes the BTree file
-	* Different branches are performed depending on if the BTree file has already been created
-	* Also initialized are multiple arrays for storing nodes
+	* Different branches are performed depending on if the BTree file has already been created.
+	* Also initialized are multiple arrays for storing nodes.
 	*
-	* @param name		name of the file
+	* @param name	name of the file
 	*/
 	public BTree(String name){
 
@@ -52,14 +52,14 @@ public class BTree{
 	}
 
 	/**
-	* Method insert adds key values and the offset value of a node to the node's values
-	* calls multiple other methods, as well as recursively calling itself
-	* uses other methods to check for existing keys and write to files
-	* if a key value already in the node is inserted, prints output indicating that the key value already exists
+	* Method insert adds key values and the offset value of a node to the node's values.
+	* Calls multiple other methods, as well as recursively calling itself.
+	* Uses other methods to check for existing keys and write to files.
+	* If a key value already in the node is inserted, prints output indicating that the key value already exists.
 	*
 	* @param key				long indicating a key value of a node
-	* @param nodeLocation	long value indicating a node's location in the B-tree		
-	* @param offset			long value indicating a node's location in the values file
+	* @param nodeLocation		long value indicating a node's location in the B-tree		
+	* @param offset				long value indicating a node's location in the values file
 	* @throws IOException
 	* @see IOException
 	*/
@@ -92,12 +92,12 @@ public class BTree{
 	}
 
 	/**
-	* Method split auto-balances the Btree
-	* ensures that search and insert methods are always performed at (nlogn) time
-	* saves memory to avoid exceeding memory limit
-	* two branches determined by if a node has a parent (-1 denotes no parent)
+	* Method split auto-balances the Btree.
+	* Ensures that search and insert methods are always performed at (nlogn) time.
+	* Saves memory to avoid exceeding memory limit.
+	* Two branches determined by if a node has a parent (-1 denotes no parent).
 	*
-	* @param node		node to be manipulated for split
+	* @param node	node to be manipulated for split
 	* @throws IOException
 	* @see IOException
 	*/
@@ -139,7 +139,7 @@ public class BTree{
 	}
 
 	/**
-	* Method relinkCP re-pairs a node with its parent after the split method
+	* Method relinkCP re-pairs a node with its parent after the split method.
 	*
 	* @param parent		parent of a node to be relinked
 	* @throws IOException
@@ -155,9 +155,9 @@ public class BTree{
 	}
 
 	/**
-	* Method findRoot searches the BTree file for the node with no parent (the root)
+	* Method findRoot searches the BTree file for the node with no parent (the root).
 	*
-	* @return bTreeFile.readLong() 		returns the root's index as a long integer
+	* @return bTreeFile.readLong() 	returns the root's index as a long integer
 	* @throws IOException
 	* @see IOException
 	*/
@@ -167,11 +167,11 @@ public class BTree{
 	}
 	
 	/**
-	* Method findKey recursively searches for a key in a node's values
-	* values are stored in a location in the BTree file
-	* checks if the key value exists somewhere in the Btree
+	* Method findKey recursively searches for a key in a node's values.
+	* Values are stored in a location in the BTree file.
+	* Checks if the key value exists somewhere in the Btree.
 	*
-	* @param key			long value indicating a key's value to be searched for
+	* @param key		long value indicating a key's value to be searched for
 	* @param location	long value indicating a location in the Btree file
 	* @return findKey	recursively recalls the method with a new location to search in the Btree file
 	*/
@@ -204,13 +204,13 @@ public class BTree{
 	}
 
 	/**
-	* Method writeNode outputs a node's values to a file
-	* a specified node is searched for in the B-tree, then its values are read and outputted
-	* values include:
-	*	 1.the parent of the node (the node lies in the parent's children array)
-	*	 2.the IDs of the node's children
-	*	 3.the node's keys
-	*	 4.the node's position in the values file (offset)
+	* Method writeNode outputs a node's values to a file.
+	* A specified node is searched for in the B-tree, then its values are read and outputted.
+	* Values include:
+	*	 1. the parent of the node (the node lies in the parent's children array)
+	*	 2. the IDs of the node's children
+	*	 3. the node's keys
+	*	 4. the node's position in the values file (offset)
 	*
 	* @param node		specified node to output values from
 	* @param location	long that indicates the node's location in the B-Tree
@@ -228,14 +228,14 @@ public class BTree{
 	}
 
 	/**
-	* Method readNode returns values stored in a file and writes them to a new node
-	* the new node is placed in a specified location in the B-tree
-	* values returned include:
-	*	 1.a new node
-	*	 2.the parent of the node (the node lies in the parent's children array)
-	* 	 3.the IDs of the node's children
-	*	 4.the node's keys
-	*	 5.the node's position in the values file (offset)
+	* Method readNode returns values stored in a file and writes them to a new node.
+	* The new node is placed in a specified location in the B-tree.
+	* Values returned include:
+	*	 1. a new node
+	*	 2. the parent of the node (the node lies in the parent's children array)
+	* 	 3. the IDs of the node's children
+	*	 4. the node's keys
+	*	 5. the node's position in the values file (offset)
 	*
 	*
 	* @param location	long that indicates the node's location in the B-Tree
@@ -257,11 +257,11 @@ public class BTree{
 	}
 
 	/**
-	* Inner Class Node is used for the nodes that will placed into the B-tree
-	* Note that unlike BST nodes, B-tree nodes have multiple branches
-	* This means that a set or array of children must be specified, instead of just a right and left child
-	* B-tree nodes also store multiple key values, instead of a single value
-	* To store keys, a set or array can be used
+	* Inner Class Node is used for the nodes that will placed into the B-tree.
+	* Note that unlike BST nodes, B-tree nodes have multiple branches.
+	* This means that a set or array of children must be specified, instead of just a right and left child.
+	* B-tree nodes also store multiple key values, instead of a single value.
+	* To store keys, a set or array can be used.
 	*
 	*/
 	class Node{ //node class
@@ -289,8 +289,8 @@ public class BTree{
 		}
 
 		/**
-		* Method hasChild checks if the node has children
-		* If the first element of childID array returns -1, that denotes that there are no children
+		* Method hasChild checks if the node has children.
+		* If the first element of childID array returns -1, that denotes that there are no children.
 		*
 		* @return boolean	returns a true or false statement depending on if there is a child attached to the node
 		*/
@@ -301,7 +301,7 @@ public class BTree{
 		}
 
 		/**
-		* Method findChild looks for a nodeID in a children array given a key value
+		* Method findChild looks for a nodeID in a children array given a key value.
 		*
 		* @param key	long value indicating a value to search with
 		* @return id	returns the child's ID#
@@ -318,7 +318,7 @@ public class BTree{
 		}
 
 		/**
-		* Method addChild adds a node to a parent node's array from a given location in the BTree file
+		* Method addChild adds a node to a parent node's array from a given location in the BTree file.
 		*
 		* @param nodeLocation	location of a value in the Btree file
 		*/
@@ -332,7 +332,7 @@ public class BTree{
 		}
 
 		/**
-		* Method insertKey adds a keyto a node's values given a key value and a node's location in the values file
+		* Method insertKey adds a keyto a node's values given a key value and a node's location in the values file.
 		*
 		* @param key		long value indicating the value of the key to be inserted
 		* @param offset		long value indicating a node's location in the values file
@@ -366,11 +366,11 @@ public class BTree{
 		}
 
 		/**
-		* Method transferInformation communicates information from a node to its parent and sibling
-		* For use in split and relinkCP
+		* Method transferInformation communicates information from a node to its parent and sibling.
+		* For use in split and relinkCP.
 		*
 		* @param parent		the parent of the node
-		* @param sibling		other nodes in the children array of the node's parent
+		* @param sibling	other nodes in the children array of the node's parent
 		*/
 		private void transferInformation(Node parent, Node sibling){
 			parent.insertKey(keys[CENTER],recordsOffset[CENTER]);
