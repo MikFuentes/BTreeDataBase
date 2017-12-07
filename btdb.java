@@ -37,43 +37,58 @@ public class btdb{
 	*/
 	public static void driver(Values valueFile, BTree bTreeFile){
 		Scanner in = new Scanner(System.in);
-		String input = in.next();
+		String input = in.next().toLowerCase();
 		try{
-			while(!input.toLowerCase().equals("exit")){
-				if(input.toLowerCase().equals("insert")){
+			while(!input.equals("exit")){
+				if(input.equals("insert")){
 					
 					long key = in.nextLong();
-					String toStore = in.nextLine();
-					if(bTreeFile.findKey(key,bTreeFile.findRoot())==-1){
-						long recordNum = valueFile.getRecord();
-						//System.out.printf("Root is at %d",bTreeFile.findRoot());
-						bTreeFile.insert(key,bTreeFile.findRoot(),recordNum);
-						valueFile.writeToFile(toStore.trim().getBytes("UTF8"));
-						System.out.printf("%d inserted.\n",key);
+					if(key>0){
+						String toStore = in.nextLine();
+						if(bTreeFile.findKey(key,bTreeFile.findRoot())==-1){
+							long recordNum = valueFile.getRecord();
+							//System.out.printf("Root is at %d",bTreeFile.findRoot());
+							bTreeFile.insert(key,bTreeFile.findRoot(),recordNum);
+							valueFile.writeToFile(toStore.trim().getBytes("UTF8"));
+							System.out.printf("%d inserted.\n",key);
+						}
+						else
+							System.out.println("ERROR: key already exists.");
 					}
-					else
-						System.out.println("ERROR: key already exists.");
+					else{
+						System.out.println("ERROR: key must be positive.");
+					}
 					
 				}
-				else if(input.toLowerCase().equals("select")){
+				else if(input.equals("select")){
 					long key = in.nextLong();
-					long location = bTreeFile.findKey(key,bTreeFile.findRoot());
-					if(location!=-1){
-						System.out.printf("%d %s\n",key,valueFile.readValues(location));
+					if(key>0){
+						long location = bTreeFile.findKey(key,bTreeFile.findRoot());
+						if(location!=-1){
+							System.out.printf("%d %s\n",key,valueFile.readValues(location));
+						}
+						else
+							System.out.println("ERROR: key does not exist.");
 					}
-					else
-						System.out.println("ERROR: key does not exist.");
+					else{
+						System.out.println("ERROR: key must be positive.");
+					}
 				}
-				else if(input.toLowerCase().equals("update")){
-					long key = in.nextLong();
-					String toStore = in.nextLine();
-					long location = bTreeFile.findKey(key,bTreeFile.findRoot());
-					if(location!=-1){
-						valueFile.updateFile(toStore.trim().getBytes("UTF8"), location);
-						System.out.printf("%d updated.\n", key);
+				else if(input.equals("update")){
+						long key = in.nextLong();
+						if(key>0){
+						String toStore = in.nextLine();
+						long location = bTreeFile.findKey(key,bTreeFile.findRoot());
+						if(location!=-1){
+							valueFile.updateFile(toStore.trim().getBytes("UTF8"), location);
+							System.out.printf("%d updated.\n", key);
+						}
+						else
+							System.out.println("ERROR: key does not exist.");
 					}
-					else
-						System.out.println("ERROR: key does not exist.");
+					else{
+						System.out.println("ERROR: key must be positive.");
+					}
 				}
 				else{
 					System.out.println("ERROR: invalid command.");
