@@ -39,8 +39,8 @@ public class btdb{
 		Scanner in = new Scanner(System.in);
 		String input = in.next();
 		try{
-			while(!input.toLowerCase().equals("exit")){
-				if(input.toLowerCase().equals("insert")){
+			while(!input.equals("exit")){
+				if(input.equals("insert")){
 					
 					long key = in.nextLong();
 					String toStore = in.nextLine();
@@ -55,7 +55,7 @@ public class btdb{
 						System.out.println("ERROR: key already exists.");
 					
 				}
-				else if(input.toLowerCase().equals("select")){
+				else if(input.equals("select")){
 					long key = in.nextLong();
 					long location = bTreeFile.findKey(key,bTreeFile.findRoot());
 					if(location!=-1){
@@ -64,7 +64,7 @@ public class btdb{
 					else
 						System.out.println("ERROR: key does not exist.");
 				}
-				else if(input.toLowerCase().equals("update")){
+				else if(input.equals("update")){
 					long key = in.nextLong();
 					String toStore = in.nextLine();
 					long location = bTreeFile.findKey(key,bTreeFile.findRoot());
