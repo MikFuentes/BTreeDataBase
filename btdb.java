@@ -37,7 +37,7 @@ public class btdb{
 	*/
 	public static void driver(Values valueFile, BTree bTreeFile){
 		Scanner in = new Scanner(System.in);
-		String input = in.next();
+		String input = in.next().toLowerCase();
 		try{
 			while(!input.equals("exit")){
 				if(input.equals("insert")){
