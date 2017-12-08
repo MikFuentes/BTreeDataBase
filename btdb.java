@@ -100,5 +100,6 @@ public class btdb{
 		catch(IOException ex){
 			ex.printStackTrace(System.out);
 		}
+		in.close();
 	}
 }
