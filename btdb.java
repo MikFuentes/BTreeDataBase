@@ -53,7 +53,7 @@ public class btdb{
 							System.out.printf("%d inserted.\n",key);
 						}
 						else
-							System.out.println("ERROR: key already exists.");
+							System.out.println("ERROR: " + key + " already exists.");
 					}
 					else{
 						System.out.println("ERROR: key must be positive.");
@@ -68,7 +68,7 @@ public class btdb{
 							System.out.printf("%d %s\n",key,valueFile.readValues(location));
 						}
 						else
-							System.out.println("ERROR: key does not exist.");
+							System.out.println("ERROR: " + key + " does not exist.");
 					}
 					else{
 						System.out.println("ERROR: key must be positive.");
@@ -84,7 +84,7 @@ public class btdb{
 							System.out.printf("%d updated.\n", key);
 						}
 						else
-							System.out.println("ERROR: key does not exist.");
+							System.out.println("ERROR: " + key + " does not exist.");
 					}
 					else{
 						System.out.println("ERROR: key must be positive.");
