@@ -24,7 +24,7 @@ java btdb btdb.bt btdb.values
 
 ### Parameters
 `key`
-- A `long` data type representing the key value of a node
+- `long` data type representing the key value of a node
 
 `word`
-- A `String` data type representing the value stored in a node
+- `String` data type representing the value stored in a node
