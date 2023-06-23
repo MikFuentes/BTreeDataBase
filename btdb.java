@@ -25,8 +25,9 @@ public class btdb{
 			String valuesData = args[1];
 			Driver d = new Driver(btData,valuesData);
 			Scanner in = new Scanner(System.in);
-			String input = in.next();
+			String input = in.next().toLowerCase();
 			while(!input.equals("exit")) {
+				System.out.println("Input a command");
 				if(input.equals("select")) {
 					System.out.println(d.select(in.nextLong()));
 				}
@@ -39,7 +40,7 @@ public class btdb{
 				else {
 					System.out.println("ERROR: invalid command.");
 				}
-				input = in.next();
+				input = in.next().toLowerCase();
 			}
 			
 			in.close();

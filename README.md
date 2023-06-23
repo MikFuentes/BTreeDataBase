@@ -13,10 +13,18 @@ java btdb btdb.bt btdb.values
 ```
 
 ## Commands
-Note: `key` and `word` are of types `long` and `String` respectively
+
+### Syntax
 | Command | Description |
 |---|---|
 |`insert <key> <word>`|Creates a node that holds the given word and inserts it into the database|
 |`select <key>`|Reads the word of the specified node|
 |`update <key> <word>`|Updates the word stored at the specified node|
 |`exit`|Exit the program|
+
+### Parameters
+`key`
+- A `long` data type representing the key value of a node
+
+`word`
+- A `String` data type representing the value stored in a node
