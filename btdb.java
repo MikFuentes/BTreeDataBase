@@ -23,83 +23,27 @@ public class btdb{
 		else{
 			String btData = args[0];
 			String valuesData = args[1];
-			Values valueFile = new Values(valuesData);
-			BTree bTreeFile = new BTree(btData);
-			driver(valueFile,bTreeFile);
-		}
-	}
-	/**
-	* Method driver handles input and output printing
-	* Serves as the bridge between the files and user input.
-	*
-	* @param valueFile	the values file, where node values are stored
-	* @param bTreeFile	the btree file containing the btree and nodes
-	*/
-	public static void driver(Values valueFile, BTree bTreeFile){
-		Scanner in = new Scanner(System.in);
-		String input = in.next().toLowerCase();
-		try{
-			while(!input.equals("exit")){
-				if(input.equals("insert")){
-					
-					long key = in.nextLong();
-					if(key>0){
-						String toStore = in.nextLine();
-						if(bTreeFile.findKey(key,bTreeFile.findRoot())==-1){
-							long recordNum = valueFile.getRecord();
-							//System.out.printf("Root is at %d",bTreeFile.findRoot());
-							bTreeFile.insert(key,bTreeFile.findRoot(),recordNum);
-							valueFile.writeToFile(toStore.trim().getBytes("UTF8"));
-							System.out.printf("%d inserted.\n",key);
-						}
-						else
-							System.out.println("ERROR: " + key + " already exists.");
-					}
-					else{
-						System.out.println("ERROR: key must be positive.");
-					}
-					
+			Driver d = new Driver(btData,valuesData);
+			Scanner in = new Scanner(System.in);
+			String input = in.next();
+			while(!input.equals("exit")) {
+				if(input.equals("select")) {
+					System.out.println(d.select(in.nextLong()));
 				}
-				else if(input.equals("select")){
-					long key = in.nextLong();
-					if(key>0){
-						long location = bTreeFile.findKey(key,bTreeFile.findRoot());
-						if(location!=-1){
-							System.out.printf("%d %s\n",key,valueFile.readValues(location));
-						}
-						else
-							System.out.println("ERROR: " + key + " does not exist.");
-					}
-					else{
-						System.out.println("ERROR: key must be positive.");
-					}
+				else if(input.equals("insert")) {
+					System.out.println(d.insert(in.nextLong(),in.nextLine()));
 				}
-				else if(input.equals("update")){
-						long key = in.nextLong();
-						if(key>0){
-						String toStore = in.nextLine();
-						long location = bTreeFile.findKey(key,bTreeFile.findRoot());
-						if(location!=-1){
-							valueFile.updateFile(toStore.trim().getBytes("UTF8"), location);
-							System.out.printf("%d updated.\n", key);
-						}
-						else
-							System.out.println("ERROR: " + key + " does not exist.");
-					}
-					else{
-						System.out.println("ERROR: key must be positive.");
-					}
+				else if(input.equals("update")) {
+					System.out.println(d.update(in.nextLong(),in.nextLine()));
 				}
-				else{
+				else {
 					System.out.println("ERROR: invalid command.");
 				}
-
-				input = in.next().toLowerCase();
+				input = in.next();
 			}
+			
+			in.close();
 		}
-		catch(IOException ex){
-			ex.printStackTrace(System.out);
-		}
-		in.close();
 	}
+	
 }
