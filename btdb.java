@@ -24,9 +24,10 @@ public class btdb{
 			String btData = args[0];
 			String valuesData = args[1];
 			Driver d = new Driver(btData,valuesData);
+			
+			System.out.println("Input a command:");
 			Scanner in = new Scanner(System.in);
 			String input = in.next().toLowerCase();
-			System.out.println("Input a command:");
 			while(!input.equals("exit")) {
 				if(input.equals("select")) {
 					System.out.println(d.select(in.nextLong()));
