@@ -1,15 +1,35 @@
 import java.io.IOException;
 
+/**
+ * <h1>Driver!</h1>
+ * This Driver class contains the methods needed to interact with the database.
+ *
+ * @author Mikael Fuentes, Magnus Untal, and Nigel Yu 
+ * @1.0
+ * @since 2017-12-06
+ */
 public class Driver {
 	private BTree bt;
 	private Values val;
 	private String statement = "";
 
+	/**
+    * Constructor Driver initializes the files to be used for the Driver class.
+    * 
+    * @param bTree 	the name of the bTree file
+	* @param values the name of the Values file
+    */
 	public Driver(String bTree, String values) {
 		bt = new BTree(bTree);
 		val = new Values(values);
 	}
 
+	/**
+     * Method insert creates a new key node with the given value and inserts it into the BTree.
+     *
+     * @param key 	the key of the node
+	 * @param word  the string value stored in the node
+     */
 	public String insert(long key, String word) throws IOException {
 		if (key > 0) {
 			long location = bt.findKey(key, bt.findRoot());
@@ -27,6 +47,11 @@ public class Driver {
 		return statement;
 	}
 
+	/**
+     * Method select will return the value of the key node.
+     *
+     * @param key 	the key of the node
+     */
 	public String select(long key) throws IOException {
 		if (key > 0) {
 			long location = bt.findKey(key, bt.findRoot());
@@ -42,6 +67,12 @@ public class Driver {
 		return statement;
 	}
 
+	/**
+     * Method update is used to update the value of the key node.
+     *
+     * @param key 	the key of the node
+	 * @param word  the string value stored in the node
+     */
 	public String update(long key, String word) throws IOException {
 		if (key > 0) {
 			long location = bt.findKey(key, bt.findRoot());

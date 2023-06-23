@@ -18,7 +18,7 @@ public class Values{
 	private RandomAccessFile valuesFile;
 	
 	/**
-    * Constructor Values initializes the file to be used for the Values file
+    * Constructor Values initializes the file to be used for the Values file.
     *
     * @param name 	the name of the file
     */

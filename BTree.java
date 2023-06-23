@@ -1,4 +1,3 @@
-//import java.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -22,11 +21,13 @@ public class BTree{
 	private RandomAccessFile bTreeFile;
 
 	/**
-	* Constructor Btree initializes the BTree file
+	* Constructor Btree initializes the BTree file.
 	* Different branches are performed depending on if the BTree file has already been created.
 	* Also initialized are multiple arrays for storing nodes.
 	*
 	* @param name	name of the file
+	* @throws IOException
+	* @see IOException
 	*/
 	public BTree(String name){
 
@@ -65,7 +66,7 @@ public class BTree{
 	* @throws IOException
 	* @see IOException
 	*/
-	public void insert(long key, long nodeLocation, long offset) throws IOException{// method for inserting keys and their respective offset **complete for now
+	public void insert(long key, long nodeLocation, long offset) throws IOException{
 		
 		Node checker = readNode(nodeLocation);
 
@@ -75,7 +76,6 @@ public class BTree{
 
 		else{
 			long newLocation = checker.findChild(key);
-			//System.out.printf("Going to node %d\n", newLocation);
 			checker = null;
 			insert(key,newLocation,offset);
 		}
@@ -103,7 +103,7 @@ public class BTree{
 	* @throws IOException
 	* @see IOException
 	*/
-	private void split(Node node) throws IOException{ //method for spliiting B-Tree **to be continued
+	private void split(Node node) throws IOException{
 		if(node.parentPointer == -1){
 			Node rightChild = new Node(nodeCount);
 			nodeCount++;
@@ -186,19 +186,16 @@ public class BTree{
 				&&checker.childID[i+1]!=-1){
 				long newLocation = checker.childID[i+1];
 				checker = null;
-				//System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key, newLocation);
 			}
 			else if(checker.keys[i]>key&&checker.childID[i]!=-1){
 				long newLocation = checker.childID[i];
 				checker = null;
-				//System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key,newLocation);
 			}
 			else if(i==ORDER-2&&checker.childID[i+1]!=-1){
 				long newLocation = checker.childID[i+1];
 				checker = null;
-				//System.out.printf("Entering node %d\n", newLocation);
 				return findKey(key,newLocation);
 			}
 		}
@@ -215,9 +212,8 @@ public class BTree{
 	*	 4. the node's position in the values file (offset)
 	*
 	* @param node		specified node to output values from
-	* @param location	long that indicates the node's location in the B-Tree
 	*/
-	private void writeNode(Node node) throws IOException{// used when writing to file
+	private void writeNode(Node node) throws IOException{
 		bTreeFile.seek(INITIAL_OFFSET+node.nodeID*NODE_LENGTH);
 		bTreeFile.writeLong(node.parentPointer);
 		for(int i = 0; i<ORDER; i++){
@@ -239,12 +235,11 @@ public class BTree{
 	*	 4. the node's keys
 	*	 5. the node's position in the values file (offset)
 	*
-	*
 	* @param location	long that indicates the node's location in the B-Tree
 	* @return toReturn 	returns node read from file
 	*/
 
-	private Node readNode(long location) throws IOException{//used when inserting to nodes
+	private Node readNode(long location) throws IOException{
 		bTreeFile.seek(INITIAL_OFFSET+location*NODE_LENGTH);
 		Node toReturn = new Node(location);
 		toReturn.parentPointer = bTreeFile.readLong();
@@ -266,12 +261,12 @@ public class BTree{
 	* To store keys, a set or array can be used.
 	*
 	*/
-	class Node{ //node class
+	class Node{
 		private long[] keys, childID, recordsOffset;
 		private long parentPointer, nodeID;
 
 		/**
-		* Constructor for Inner Class Node
+		* Constructor for Inner Class Node.
 		*
 		* @param nodeLocation	stores the value of the nodeID based on the location
 		*/

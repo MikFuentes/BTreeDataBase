@@ -13,7 +13,7 @@ import java.io.*;
 public class btdb{
 	/**
 	* Main method for btdb class
-	* Passes the required files to the driver method.
+	* Passes the required files to the Driver class.
 	* @param args 	accepts BTree and Values files
 	*/
 	public static void main(String[] args) throws IOException{
